@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>포지션 선택</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+<div class="bg-white p-8 rounded shadow-md w-96">
+    <h2 class="text-xl font-bold mb-4 text-center">포지션을 선택하세요</h2>
+    <form th:action="@{/players}" method="get">
+        <select name="position" class="w-full p-2 border rounded mb-4">
+            <option th:each="pos : ${positions}" th:value="${pos}" th:text="${pos}">Position</option>
+        </select>
+        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">선택</button>
+    </form>
+</div>
+</body>
+</html>

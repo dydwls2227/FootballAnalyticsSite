@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${player.player} + ' 선수 스탯'">선수 스탯</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+<div class="bg-white p-8 rounded shadow-md w-[500px]">
+    <h2 th:text="${player.player} + ' 선수의 포지션 내 스탯 백분위(%)'"
+        class="text-xl font-bold mb-4 text-center">선수 스탯</h2>
+
+    <canvas id="statChart" width="400" height="400" class="mx-auto"></canvas>
+</div>
+
+<script th:inline="javascript">
+    const labels = [[${percentiles.keySet()}]];
+    const data = [[${percentiles.values()}]];
+
+    const ctx = document.getElementById('statChart').getContext('2d');
+    new Chart(ctx, {
+        type: 'radar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: '포지션 내 백분위(%)',
+                data: data,
+                backgroundColor: 'rgba(54, 162, 235, 0.5)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                r: {
+                    min: 0,
+                    max: 100,
+                    ticks: {
+                        stepSize: 20
+                    }
+                }
+            }
+        }
+    });
+</script>
+</body>
+</html>
