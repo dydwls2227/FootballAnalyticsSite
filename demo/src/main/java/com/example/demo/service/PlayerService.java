@@ -26,7 +26,18 @@ public class PlayerService {
     }
 
     public List<Player> getPlayersByPosition(String position) {
-        return playerRepository.findByPositionContaining(position);
+        return playerRepository.findAll().stream()
+                .filter(p -> Arrays.stream(p.getPosition().split(","))
+                        .map(pos -> pos.replaceAll("\"", "").trim())
+                        .anyMatch(pos -> pos.equals(position)))
+                .collect(Collectors.toMap(
+                        Player::getPlayer,
+                        Function.identity(),
+                        (existing, duplicate) -> existing
+                ))
+                .values().stream()
+                .sorted(Comparator.comparing(Player::getPlayer))
+                .collect(Collectors.toList());
     }
 
     public Optional<Player> getPlayerById(Long id) {
